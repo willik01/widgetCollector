@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Widget Details</h1>
+
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">{{ widget.name }}</span>
+    <p>Type: {{ widget.type }}</p>
+    <p>Description: {{ widget.description|linebreaks }}</p>
+    <p>Price: widget.price</p>
+  </div>
+</div>
+
+{% endblock %}

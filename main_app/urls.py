@@ -6,4 +6,5 @@ urlpatterns = [
     path('about/', views.about, name='about'),
       # route for widget index
     path('widgets/', views.widgets_index, name='index'),
+    path('widgets/<int:widget_id>/', views.widgets_detail, name='detail'),
 ]
