@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Widget
 
 # fake data for testing
@@ -27,6 +29,24 @@ def about(request):
 def widgets_index(request):
     widgets = Widget.objects.all()
     return render(request, 'widgets/index.html', { 'widgets': widgets })
+
+# class WidgetList(ListView):
+#     model = Widget
+#     template_name = 'widgets/index.html'
+
+class WidgetCreate(CreateView):
+  model = Widget
+  fields = '__all__'
+  success_url = '/widgets/'
+
+class WidgetUpdate(UpdateView):
+  model = Widget
+  # Let's disallow the renaming of a cat by excluding the name field!
+  fields = ['type', 'description', 'price']
+
+class WidgetDelete(DeleteView):
+  model = Widget
+  success_url = '/widgets/'
 
 def widgets_detail(request, widget_id):
     widget = Widget.objects.get(id=widget_id)

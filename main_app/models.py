@@ -11,7 +11,7 @@ class Widget(models.Model):
     def __str__(self):
         return self.name
     
-    # def get_absolute_url(self):
-    #     return reverse('detail', kwargs={'widget_id':self.id})
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'widget_id':self.id})
  
     

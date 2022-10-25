@@ -10,6 +10,10 @@
     <p>Description: {{ widget.description|linebreaks }}</p>
     <p>Price: widget.price</p>
   </div>
+  <div class="card-action">
+    <a href="{% url 'widgets_update' widget.id %}">Edit</a>
+    <a href="{% url 'widgets_delete' widget.id %}">Delete</a>
+  </div>
 </div>
 
 {% endblock %}
