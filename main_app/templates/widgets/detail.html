@@ -1,19 +1,53 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Widget Details</h1>
+<h1>Cat Details</h1>
 
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">{{ widget.name }}</span>
-    <p>Type: {{ widget.type }}</p>
-    <p>Description: {{ widget.description|linebreaks }}</p>
-    <p>Price: widget.price</p>
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ widget.name }}</span>
+        <p>Type: {{ widget.type }}</p>
+        <p>Description: {{ widget.description|linebreaks }}</p>
+        <p>Age: {{ widget.price }}</p>
+      </div>
+      <div class="card-action">
+        <a href="{% url 'widgets_update' widget.id %}">Edit</a>
+        <a href="{% url 'widgets_delete' widget.id %}">Delete</a>
+      </div>
+    </div>
   </div>
-  <div class="card-action">
-    <a href="{% url 'widgets_update' widget.id %}">Edit</a>
-    <a href="{% url 'widgets_delete' widget.id %}">Delete</a>
+  <div class="col s6">
+    <form action="{% url 'add_cleaning' widget.id %}" method="POST">
+      {% csrf_token %}
+      {{ cleaning_form.as_p }}
+      <input type="submit" class="btn" value="Add Cleaning">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Cleaning Type</th></tr>
+      </thead>
+      <tbody>
+        {% for cleaning in widget.cleaning_set.all %}
+          <tr>
+            <td>{{cleaning.date}}</td>
+            <td>{{cleaning.get_c_type_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
-
+<script>
+  const dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+  const selectEl = document.getElementById('id_c_type');
+  M.FormSelect.init(selectEl);
+</script>
 {% endblock %}
