@@ -42,22 +42,22 @@ def widgets_index(request):
 
 def widgets_detail(request, widget_id):
     widget = Widget.objects.get(id=widget_id)
-    # id_list = widget.accessories.all().values_list('id')
-    # accessories_widget_doesnt_have = Widget.objects.exclude(id__in=id_list)
+    id_list = widget.accessories.all().values_list('id')
+    accessories_widget_doesnt_have = Accessory.objects.exclude(id__in=id_list)
     cleaning_form = CleaningForm()
     return render(request, 'widgets/detail.html', { 
       'widget': widget, 
       'cleaning_form' : cleaning_form, 
-      # 'accessories' : accessories_widget_doesnt_have,
+      'accessories' : accessories_widget_doesnt_have,
     })
 class WidgetCreate(CreateView):
   model = Widget
-  fields = '__all__'
+  fields = ['name', 'type', 'description', 'price']
   success_url = '/widgets/'
 
 class WidgetUpdate(UpdateView):
   model = Widget
-  # Let's disallow the renaming of a cat by excluding the name field!
+  # Let's disallow the renaming by excluding the name field!
   fields = ['type', 'description', 'price']
 
 class WidgetDelete(DeleteView):
@@ -69,8 +69,7 @@ def add_cleaning(request, widget_id):
   form = CleaningForm(request.POST)
   # validate the form
   if form.is_valid():
-    # don't save the form to the db until it
-    # has the cat_id assigned
+    # don't save the form to the db until it has widget_id assigned
     new_cleaning = form.save(commit=False)
     new_cleaning.widget_id = widget_id
     new_cleaning.save()

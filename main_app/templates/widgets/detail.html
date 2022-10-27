@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Cat Details</h1>
+<h1>Widget Details</h1>
 
 <div class="row">
   <div class="col s6">
@@ -39,6 +39,48 @@
     </table>
   </div>
 </div>
+  <hr>
+  <div class="row">
+    <div class="col s6">
+      <h3>{{ widget.name }}'s Accessories</h3>
+      {% if widget.accessories.count %}
+        {% for accessory in widget.accessories.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                A {{ accessory.name }} that {{ accessory.function }}
+              </span>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>No Accessories :(</h5>
+      {% endif %}
+    </div>
+    <div class="col s6">
+      <h3>Available Accessories</h3>
+      {% if accessories.count %}
+        {% for accessory in accessories.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                A {{ accessory.name }} that {{ accessory.function }}
+              </span>
+            </div>
+            <div class="card-action">
+              <form action="{% url 'assoc_accessory' widget.id accessory.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn">Add</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>{{widget.name}} Already Has All Available Accessories</h5>
+      {% endif %}
+    </div>
+  </div>
+  
 <script>
   const dateEl = document.getElementById('id_date');
   M.Datepicker.init(dateEl, {
